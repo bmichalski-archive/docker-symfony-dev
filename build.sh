@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build "$@" -t bmichalski/nginx-php . 
+docker build "$@" -t bmichalski/nginx-php-fpm . 

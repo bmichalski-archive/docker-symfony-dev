@@ -18,19 +18,19 @@ docker run \
 bmichalski/php-fpm \
 bash -c "/root/on-startup.sh"
 
-NGINX_PHP_EXISTS=`docker inspect --format="{{ .Id }}" nginx-php 2> /dev/null`
+NGINX_PHP_FPM_EXISTS=`docker inspect --format="{{ .Id }}" nginx-php-fpm 2> /dev/null`
 
-if ! [ -z "$NGINX_PHP_EXISTS" ]
+if ! [ -z "$NGINX_PHP_FPM_EXISTS" ]
 then
-  docker kill nginx-php
-  docker rm nginx-php
+  docker kill nginx-php-fpm
+  docker rm nginx-php-fpm
 fi
 
 docker run \
 -p 80:80 \
 -v $DIR/vhost:/var/vhost \
 --link php-fpm:php-fpm \
---name nginx-php \
+--name nginx-php-fpm \
 -d \
-bmichalski/nginx-php \
+bmichalski/nginx-php-fpm \
 bash -c "/root/on-startup.sh"
