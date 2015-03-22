@@ -15,7 +15,7 @@ docker run \
 -v $DIR/vhost:/var/vhost \
 --name php-fpm \
 -d \
-bmichalski/php-fpm \
+bmichalski/php-fpm-dev \
 bash -c "/root/on-startup.sh"
 
 NGINX_PHP_FPM_EXISTS=`docker inspect --format="{{ .Id }}" nginx-php-fpm 2> /dev/null`
@@ -32,5 +32,5 @@ docker run \
 --link php-fpm:php-fpm \
 --name nginx-php-fpm \
 -d \
-bmichalski/nginx-php-fpm \
+bmichalski/nginx-php-fpm-dev \
 bash -c "/root/on-startup.sh"
