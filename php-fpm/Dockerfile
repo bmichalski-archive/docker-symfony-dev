@@ -7,7 +7,6 @@ RUN \
   apt-get install -y \
     php5-xdebug \
     php5-curl \
-    php5-mysqlnd \
     php5-intl \
     curl \
     git 
