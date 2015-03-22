@@ -5,7 +5,17 @@ RUN \
 
 RUN \
   apt-get install -y \
-    php5-xdebug
+    php5-xdebug \
+    php5-curl \
+    php5-mysqlnd \
+    php5-intl \
+    curl \
+    git 
+    
+
+RUN \
+  curl -sS https://getcomposer.org/installer | php && \
+  mv /root/composer.phar /usr/bin/composer
 
 COPY conf/etc/php5 /etc/php5
 

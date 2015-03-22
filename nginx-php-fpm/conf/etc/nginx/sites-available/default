@@ -2,24 +2,39 @@ server {
   listen 80;
   listen [::]:80 default_server ipv6only=on; 
 
-  root /var/vhost;
+  root /var/vhost/web;
   index index.php index.html index.htm;
 
   server_name localhost;
 
   location / {
-    # First attempt to serve request as file, then
-    # as directory, then fall back to displaying a 404.
-    try_files $uri $uri/ /index.html;
+    try_files $uri /app.php$is_args$args;
   }
 
-  location ~ \.php$ {
-    try_files $uri =404;
-    fastcgi_split_path_info ^(.+\.php)(/.+)$;
-    # NOTE: You should have "cgi.fix_pathinfo = 0;" in php.ini
-
+  # DEV
+  # This rule should only be placed on your development environment
+  # In production, don't include this and don't deploy app_dev.php or config.php
+  location ~ ^/(app_dev|config)\.php(/|$) {
     fastcgi_pass php-fpm:9000;
-    fastcgi_index index.php;
+    fastcgi_split_path_info ^(.+\.php)(/.*)$;
     include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param HTTPS off;
   }
+
+  # PROD
+  location ~ ^/app\.php(/|$) {
+    fastcgi_pass php-fpm:9000;
+    fastcgi_split_path_info ^(.+\.php)(/.*)$;
+    include fastcgi_params;
+    fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    fastcgi_param HTTPS off;
+    # Prevents URIs that include the front controller. This will 404:
+    # http://domain.tld/app.php/some-path
+    # Remove the internal directive to allow URIs like this
+    internal;
+  }
+
+  error_log /var/log/nginx-vhost/vhost/vhost_error.log;
+  access_log /var/log/nginx-vhost/vhost/vhost_access.log;
 }
