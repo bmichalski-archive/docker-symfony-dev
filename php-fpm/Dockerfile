@@ -1,7 +1,6 @@
 FROM bmichalski/php-fpm
 
-RUN \
-  base/configure.sh
+RUN base/configure.sh
 
 RUN \
   apt-get install -y \
@@ -10,7 +9,6 @@ RUN \
     php5-intl \
     curl \
     git 
-    
 
 RUN \
   curl -sS https://getcomposer.org/installer | php && \
@@ -18,5 +16,4 @@ RUN \
 
 COPY conf/etc/php5 /etc/php5
 
-CMD \
-  /root/on-startup.sh
+CMD /root/on-startup.sh

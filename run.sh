@@ -27,10 +27,10 @@ then
 fi
 
 docker run \
--p 80:80 \
--v $DIR/vhost:/var/vhost \
---link php-fpm:php-fpm \
---name nginx-php-fpm \
--d \
-bmichalski/nginx-php-fpm-dev \
-bash -c "/root/on-startup.sh"
+  -p 80:80 \
+  -v $DIR/vhost:/var/vhost \
+  --link php-fpm:php-fpm \
+  --name nginx-php-fpm \
+  -d \
+  bmichalski/nginx-php-fpm-dev \
+  bash -c "/root/on-startup.sh"
